@@ -1,15 +1,4 @@
-import { ButtonContainer } from "./style";
-
-
+import { ButtonContainer } from './style'
 export function Button() {
-
-    return (
-        <>
-
-        <ButtonContainer>
-            Clique aqui
-        </ButtonContainer>
-
-        </>
-    )
+  return <ButtonContainer>Clique aqui</ButtonContainer>
 }

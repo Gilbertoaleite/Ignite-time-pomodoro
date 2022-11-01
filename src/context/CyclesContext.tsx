@@ -1,5 +1,6 @@
 import { createContext, useReducer, useState } from "react";
-import { Cycle, cyclesReducer } from "../reducers/cycles";
+import { ActionType, addNewCycleAction, interruptCurrentCycleAsdAction, markCurrentCycleAsFinishedAction } from "../reducers/cycles/actions";
+import { Cycle, cyclesReducer } from "../reducers/cycles/reducer";
 
 interface CreateCycleData {
     task: string;
@@ -20,19 +21,19 @@ interface CyclesContextType {
 }
 
 interface CyclesContextProviderProps {
-    children: React.ReactNode; 
+    children: React.ReactNode;
 }
 
 export function CyclesContextProvider({ children,
-    }: CyclesContextProviderProps) {
-    const [cyclesState, dispatch] = useReducer(cyclesReducer, 
+}: CyclesContextProviderProps) {
+    const [cyclesState, dispatch] = useReducer(cyclesReducer,
         {
-        cycles:[],
-        activeCycleId: null,
-    });
+            cycles: [],
+            activeCycleId: null,
+        });
 
     const [amountSecondPassed, setAmountSecondPassed] = useState(0);
-    const {cycles, activeCycleId} = cyclesState;
+    const { cycles, activeCycleId } = cyclesState;
     const activeCycle = cycles.find((Cycle) => Cycle.id === activeCycleId);
 
     function setSecondsPassed(seconds: number) {
@@ -40,12 +41,7 @@ export function CyclesContextProvider({ children,
     }
 
     function markCurrentCycleAsFinished() {
-        dispatch({
-            type: 'MARK_CURRENT_CYCLE_AS_FINISHED',
-            payload: {
-                activeCycleId,
-            }
-        })
+        dispatch(markCurrentCycleAsFinishedAction())
     }
     function createNewCycle(data: CreateCycleData) {
         const id = String(new Date().getTime())
@@ -55,27 +51,13 @@ export function CyclesContextProvider({ children,
             task: data.task,
             minutesAmount: data.minutesAmount,
             startDate: new Date(),
-            // finishedDate: new Date(),
         }
+        dispatch(addNewCycleAction(newCycle));
 
-        dispatch({
-            type: 'ADD_NEW_CYCLE',
-            payload: {
-                newCycle,
-            }
-        });
-
-        // setCycles((state) => [...state, newCycle]);
-        // setActiveCycleId(id);
         setAmountSecondPassed(0);
     }
     function interruptCurrentCycle() {
-        dispatch({
-            type: 'INTERRUPT_CURRENT_CYCLE',
-            payload: {
-                activeCycleId,
-            },  
-        })
+        dispatch(interruptCurrentCycleAsdAction())
     }
 
     return (

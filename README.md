@@ -1,0 +1,1 @@
+Projeto desenvolvido na aula do ignite da Rocktseat desenvolvido em React, ultilizando o Vite, useReduce, useContext.

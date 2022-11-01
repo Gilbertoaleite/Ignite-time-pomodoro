@@ -9,6 +9,7 @@ export function Header() {
 
         <HeaderContainer>
             <img src={ logoImg } alt="" />
+            <span>Developer with ♥ by: <a target="noblank" href="http://gilbertoaleite-desenvolvedor.tech/">Gilberto A Leite</a></span>
             <nav>
                 <NavLink to="/" title="Timer">
                     <Timer size={ 24 } />

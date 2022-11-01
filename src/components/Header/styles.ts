@@ -5,8 +5,18 @@ export const HeaderContainer = styled.header`
 display: flex;
 align-items: center;
 justify-content: space-between; 
+margin-bottom: 1rem;
+    a{
+    width: 3rem; 
+    height: 3rem;
+    text-decoration:none ;
 
+    color: ${props => props.theme['gray-100']};
 
+    &:hover{
+        color: ${props => props.theme['gray-500']};
+    }
+    }
 nav{
     display:flex;
     gap: 0.5rem;

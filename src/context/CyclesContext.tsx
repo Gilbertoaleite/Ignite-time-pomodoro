@@ -30,7 +30,7 @@ export function CyclesContextProvider({ children,
     const [cyclesState, dispatch] = useReducer(cyclesReducer,
         {
             cycles: [],
-            activeCycleId: null,
+            activeCycleId: []
         },
         ()=>{
             const storedStateAsJSON = localStorage.getItem(
@@ -87,7 +87,7 @@ export function CyclesContextProvider({ children,
 
     return (
         <CyclesContext.Provider
-            value={ {
+            value={{ 
                 cycles,
                 activeCycle,
                 activeCycleId,
@@ -95,8 +95,7 @@ export function CyclesContextProvider({ children,
                 amountSecondPassed,
                 setSecondsPassed,
                 createNewCycle,
-                interruptCurrentCycle,
-            } }>
+                interruptCurrentCycle}}>
             { children }
         </CyclesContext.Provider>
     )

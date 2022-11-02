@@ -1,6 +1,6 @@
 import { differenceInSeconds } from "date-fns";
 import { createContext, useEffect, useReducer, useState } from "react";
-import { ActionType, addNewCycleAction, interruptCurrentCycleAsdAction, markCurrentCycleAsFinishedAction } from "../reducers/cycles/actions";
+import { addNewCycleAction, interruptCurrentCycleAsdAction, markCurrentCycleAsFinishedAction } from "../reducers/cycles/actions";
 import { Cycle, cyclesReducer } from "../reducers/cycles/reducer";
 
 interface CreateCycleData {
@@ -30,31 +30,35 @@ export function CyclesContextProvider({ children,
     const [cyclesState, dispatch] = useReducer(cyclesReducer,
         {
             cycles: [],
-            activeCycleId: []
+            activeCycleId: null
         },
-        ()=>{
+        () => {
             const storedStateAsJSON = localStorage.getItem(
                 '@ignite-timer:cycles-state-1.0.0',
             )
 
-            if(storedStateAsJSON){
+            if (storedStateAsJSON) {
                 return JSON.parse(storedStateAsJSON);
             }
-        },
-    )
+            return {
+                cycles: [],
+                activeCycleId: null,
+            }
+        })
+
 
     const { cycles, activeCycleId } = cyclesState;
     const activeCycle = cycles.find((Cycle) => Cycle.id === activeCycleId);
-    
+
     const [amountSecondPassed, setAmountSecondPassed] = useState(() => {
         if (activeCycle) {
-        const  secondDifference = differenceInSeconds   (
-            new Date(),
-            new Date(activeCycle?.startDate),
+            const secondDifference = differenceInSeconds(
+                new Date(),
+                new Date(activeCycle?.startDate),
             )
         }
         return 0
-    })  
+    })
 
     useEffect(() => {
         const stateJSON = JSON.stringify(cyclesState);
@@ -87,7 +91,7 @@ export function CyclesContextProvider({ children,
 
     return (
         <CyclesContext.Provider
-            value={{ 
+            value={ {
                 cycles,
                 activeCycle,
                 activeCycleId,
@@ -95,7 +99,8 @@ export function CyclesContextProvider({ children,
                 amountSecondPassed,
                 setSecondsPassed,
                 createNewCycle,
-                interruptCurrentCycle}}>
+                interruptCurrentCycle
+            } }>
             { children }
         </CyclesContext.Provider>
     )
